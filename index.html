@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Donna's Cuddly Quilts</title>
+    <meta name="description" content="Handmade custom baby quilts and T-shirt memory quilts by Donna. 100% cotton, machine washable, made to your design.">
+
+    <!-- link previews when the site is shared (Facebook, texts, group chats) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Donna's Cuddly Quilts">
+    <meta property="og:description" content="Handmade custom baby quilts and T-shirt memory quilts, made with love to your design.">
+    <meta name="twitter:card" content="summary">
+
+    <!-- browser tab and home-screen icon -->
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="apple-touch-icon" href="images/logo.png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
@@ -116,27 +128,6 @@
         .hero h2 {
             color: #4b0f4b;
             margin: 0 0 12px;
-        }
-
-        .services {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin: 40px 0;
-        }
-
-        @media (max-width: 900px) {
-            .services {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        .service-card {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            text-align: center;
         }
 
         .gallery {
@@ -313,7 +304,7 @@
         }
 
         footer {
-            background-color: #00c4b8;
+            background-color: #008b82; /* deeper teal so the white text is readable */
             color: white;
             text-align: center;
             padding: 10px 20px;
@@ -375,15 +366,6 @@
             .hero p {
                 font-size: 0.95em;
                 margin-bottom: 10px;
-            }
-
-            .services {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .service-card {
-                padding: 15px;
             }
 
             .carousel {
@@ -513,9 +495,9 @@
             }
         }
 
-        /* Collapsible form styles */
+        /* "Request a Custom Quilt" button */
         .contact-toggle {
-            background-color: #00c4b8;
+            background-color: #008b82; /* deeper teal so the white text is readable */
             color: white;
             border: none;
             padding: 15px 25px;
@@ -523,40 +505,106 @@
             cursor: pointer;
             font-family: "Patrick Hand", sans-serif;
             font-size: 26px;
-            margin-bottom: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            display: block;
             transition: background-color 0.3s ease;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 0 auto;
             width: 70%;
             max-width: 300px;
         }
 
         .contact-toggle:hover {
-            background-color: #00a89e;
+            background-color: #006f68;
         }
 
-        .contact-toggle .arrow {
-            transition: transform 0.3s ease;
-            font-size: 14px;
+        /* Pop-up order form */
+        .quilt-dialog {
+            border: none;
+            border-radius: 10px;
+            padding: 0;
+            width: calc(100% - 32px);
+            max-width: 560px;
+            max-height: calc(100vh - 32px);
+            box-shadow: 0 10px 40px rgba(75, 15, 75, 0.3);
+            font-family: "Patrick Hand", sans-serif;
         }
 
-        .contact-toggle.expanded .arrow {
-            transform: rotate(180deg);
+        .quilt-dialog[open] {
+            animation: dialog-pop 0.2s ease-out;
         }
 
-        .contact-form-container {
-            max-height: 0;
+        @keyframes dialog-pop {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: none; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .quilt-dialog[open] { animation: none; }
+        }
+
+        .quilt-dialog::backdrop {
+            background-color: rgba(75, 15, 75, 0.45);
+        }
+
+        /* stop the page behind from scrolling while the form is open */
+        body:has(.quilt-dialog[open]) {
             overflow: hidden;
-            transition: max-height 0.3s ease-out;
         }
 
-        .contact-form-container.expanded {
-            max-height: 1000px;
-            transition: max-height 0.5s ease-in;
+        .dialog-inner {
+            position: relative;
+            padding: 24px 28px;
+        }
+
+        .quilt-dialog h2 {
+            color: #4b0f4b;
+            text-align: center;
+            margin: 0 40px 4px;
+        }
+
+        .dialog-intro {
+            text-align: center;
+            margin: 0 0 8px;
+            font-size: 18px;
+        }
+
+        .quilt-dialog .contact-form {
+            margin: 16px auto 0;
+        }
+
+        .quilt-dialog .dialog-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            min-width: 0;
+            min-height: 0;
+            margin: 0;
+            padding: 0 0 4px;
+            border-radius: 50%;
+            background: transparent;
+            color: #4b0f4b;
+            font-size: 34px;
+            line-height: 1;
+        }
+
+        .quilt-dialog .dialog-close:hover {
+            background-color: #f3d6d6;
+        }
+
+        .quilt-dialog .dialog-close:focus-visible {
+            outline: 2px solid #4b0f4b;
+            outline-offset: 2px;
+        }
+
+        .quilt-dialog .form-group {
+            margin-bottom: 14px;
+        }
+
+        @media (max-width: 480px) {
+            .dialog-inner {
+                padding: 20px 16px;
+            }
         }
     </style>
 </head>
@@ -571,7 +619,7 @@
 
     <div class="container">
         <div class="hero">
-            <h2>Welcome to Donna's Cuddly Quilts</h2>
+            <h2>Hi, I'm Donna!</h2>
             <p>Each baby quilt is handcrafted with your custom design in mind</p> 
             <p>100% cotton &bull; machine washable and dryable &bull; 42" x 42" </p>
             <p>$120 + shipping per quilt</p>
@@ -651,16 +699,17 @@
         <div class="contact">
             <h2>Get In Touch</h2>
             
-            <button class="contact-toggle" id="contact-toggle">
-                <span>Request a Custom Quilt</span>
-                <span class="arrow">▼</span>
-            </button>
-            
-            <div class="contact-form-container" id="contact-form-container">
+            <button type="button" class="contact-toggle" id="contact-toggle" aria-haspopup="dialog">Request a Custom Quilt</button>
+
+            <dialog class="quilt-dialog" id="quilt-dialog" aria-labelledby="quilt-dialog-title">
+              <div class="dialog-inner">
+                <button type="button" class="dialog-close" aria-label="Close">&times;</button>
+                <h2 id="quilt-dialog-title">Request a Custom Quilt</h2>
+                <p class="dialog-intro">Tell me a little about the quilt you have in mind!</p>
                 <form class="contact-form">
                 <div class="form-group">
                     <label for="name">Your name:</label>
-                    <input type="text" id="name" name="name" required>
+                    <input type="text" id="name" name="name" required autofocus>
                 </div>
 
                  <div class="form-group">
@@ -690,8 +739,9 @@
                 </div>
 
                 <button id="send-btn" type="submit">Send Message</button>
-            </form>
-            </div>
+                </form>
+              </div>
+            </dialog>
 
             <script>
         // build and open a mailto: link from the form values
@@ -735,39 +785,34 @@
             window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
         }
 
+        // pop-up form: the button opens it; the ×, Esc, or a click on the dimmed background closes it
+        const dialog = document.getElementById('quilt-dialog');
+        document.getElementById('contact-toggle').addEventListener('click', function () {
+            dialog.showModal();
+        });
+        dialog.querySelector('.dialog-close').addEventListener('click', function () {
+            dialog.close();
+        });
+        dialog.addEventListener('click', function (e) {
+            if (e.target === dialog) dialog.close(); // only the backdrop, not the card itself
+        });
+
+        // delivery date can't be in the past: set the earliest pickable date to today (local time)
+        const dateInput = document.getElementById('date');
+        const today = new Date();
+        today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
+        dateInput.min = today.toISOString().slice(0, 10);
+
         // the browser checks the required fields first, then fires 'submit'
         const form = document.querySelector('.contact-form');
-        if (form) {
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-                openMailClient();
-            });
-        }
-
-        // Collapsible form functionality
-        const toggleBtn = document.getElementById('contact-toggle');
-        const formContainer = document.getElementById('contact-form-container');
-        
-        if (toggleBtn && formContainer) {
-            toggleBtn.addEventListener('click', function() {
-                const isExpanded = formContainer.classList.contains('expanded');
-                
-                if (isExpanded) {
-                    // Collapse the form
-                    formContainer.classList.remove('expanded');
-                    toggleBtn.classList.remove('expanded');
-                    toggleBtn.querySelector('span:first-child').textContent = 'Request a Custom Quilt';
-                } else {
-                    // Expand the form
-                    formContainer.classList.add('expanded');
-                    toggleBtn.classList.add('expanded');
-                    toggleBtn.querySelector('span:first-child').textContent = 'Hide Form';
-                }
-            });
-        }
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            openMailClient();
+            dialog.close();
+        });
     </script> 
 
-            <p class="contact-email">Email: <a href="mailto:donnascuddlyquilts@gmail.com">donnascuddlyquilts@gmail.com</a></p>
+            <p class="contact-email">Or send an email: <a href="mailto:donnascuddlyquilts@gmail.com">donnascuddlyquilts@gmail.com</a></p>
         </div>
     </div>
 
