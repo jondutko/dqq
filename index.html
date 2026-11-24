@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Donna's Cuddly Quilts</title>
-    <!-- Add this line to import the font -->
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Coming+Soon&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
     
     <style>
         body {
@@ -30,8 +29,7 @@
             text-align: center;
             color: white;
             position: relative;
-            width: 100%;
-            
+
         }
 
         header p {
@@ -108,34 +106,105 @@
             margin-bottom: 20px;
         }
 
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 20px;
+        /* Photo carousel: one quilt at a time, swipeable, shown in full */
+        .carousel {
+            position: relative;
+            max-width: 800px;
+            margin: 20px auto 0;
         }
 
-        @media (max-width: 900px) {
-            .gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        .gallery-item {
+        .carousel-track {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            background-color: white;
             border-radius: 10px;
-            overflow: hidden;
-            height: 300px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .gallery-item img {
+        .carousel-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel-slide {
+            flex: 0 0 100%;
+            height: 500px;
+            margin: 0;
+            scroll-snap-align: center;
+        }
+
+        .carousel-slide img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
+            object-fit: contain;
         }
 
-        .gallery-item img:hover {
-            transform: scale(1.05);
+        .carousel .carousel-btn {
+            position: absolute;
+            top: 250px;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            min-width: 0;
+            min-height: 0;
+            margin: 0;
+            padding: 0 0 4px;
+            border-radius: 50%;
+            background-color: rgba(75, 15, 75, 0.75);
+            font-size: 32px;
+            line-height: 1;
+        }
+
+        .carousel .carousel-btn:hover {
+            background-color: #b623b6;
+        }
+
+        .carousel-prev { left: 10px; }
+        .carousel-next { right: 10px; }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .carousel-dots button {
+            width: 28px;
+            height: 28px;
+            min-width: 0;
+            min-height: 0;
+            margin: 0;
+            padding: 0;
+            background: transparent;
+        }
+
+        .carousel-dots button::before {
+            content: "";
+            display: block;
+            width: 12px;
+            height: 12px;
+            margin: auto;
+            border-radius: 50%;
+            background-color: white;
+            border: 2px solid #4b0f4b;
+            box-sizing: border-box;
+        }
+
+        .carousel-dots button[aria-current="true"]::before {
+            background-color: #4b0f4b;
+        }
+
+        .carousel-dots button:hover {
+            background: transparent;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .carousel-track {
+                scroll-behavior: auto;
+            }
         }
 
         /* Improve image loading performance */
@@ -190,7 +259,7 @@
             padding: 20px;
             margin-top: 40px;
             font-family: 'Amatic SC', cursive;
-            font-weight: 300;
+            font-weight: 400;
         }
 
         button {
@@ -246,7 +315,7 @@
                 margin-bottom: 10px;
             }
 
-            .services, .gallery-grid {
+            .services {
                 grid-template-columns: 1fr;
                 gap: 15px;
             }
@@ -255,8 +324,15 @@
                 padding: 15px;
             }
 
-            .gallery-item {
-                height: 250px;
+            .carousel-slide {
+                height: 380px;
+            }
+
+            .carousel .carousel-btn {
+                top: 190px;
+                width: 44px;
+                height: 44px;
+                font-size: 28px;
             }
 
             .contact {
@@ -339,8 +415,12 @@
                 line-height: 1.4;
             }
 
-            .gallery-item {
-                height: 200px;
+            .carousel-slide {
+                height: 320px;
+            }
+
+            .carousel .carousel-btn {
+                top: 160px;
             }
 
             .contact {
@@ -433,6 +513,7 @@
     <header>
         <h1>Donna's Cuddly Quilts</h1>
         <p>Handmade with love for your little one</p>
+        <img class="header-logo" src="images/logo.png" alt="Donna's Cuddly Quilts logo">
     </header>
 
     <div class="container">
@@ -441,30 +522,76 @@
             <p>Each baby quilt is handcrafted with your custom design in mind</p> 
             <p>100% cotton &bull; machine washable and dryable &bull; 42" x 42" </p>
             <p>$120 + shipping per quilt</p>
+            <p>I also make T-shirt memory quilts from your favorite old shirts &mdash; just ask for details!</p>
         </div>
 
         <div class="gallery">
             <h2>My Latest Creations</h2>
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="images/quilt1.png" alt="Quilt 1">
+            <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Quilt photos">
+                <div class="carousel-track" tabindex="0">
+                    <figure class="carousel-slide"><img src="images/quilt1.jpg" alt="Two babies napping on a lime green, teal and pink patchwork quilt with flamingo squares"></figure>
+                    <figure class="carousel-slide"><img src="images/quilt2.jpg" alt="Farm-themed patchwork quilt with tractors, cow print and red gingham" loading="lazy"></figure>
+                    <figure class="carousel-slide"><img src="images/quilt3.jpg" alt="Safari patchwork quilt with lions, elephants, giraffe print and yellow gingham" loading="lazy"></figure>
+                    <figure class="carousel-slide"><img src="images/quilt4.jpg" alt="Bright cupcake patchwork quilt with pink, lime and polka dot squares and a lemon print back" loading="lazy"></figure>
+                    <figure class="carousel-slide"><img src="images/quilt5.jpg" alt="Pink, black and cow print patchwork quilt with little cow squares" loading="lazy"></figure>
+                    <figure class="carousel-slide"><img src="images/quilt6.jpg" alt="Baby in a lemon sleeper lying on a lemon print quilt" loading="lazy"></figure>
+                    <figure class="carousel-slide"><img src="images/quilt7.jpg" alt="Cartoon cat patchwork quilt with grey paw print squares and a yellow striped back" loading="lazy"></figure>
+                    <figure class="carousel-slide"><img src="images/quilt8.jpg" alt="Cartoon dog patchwork quilt with grey paw print squares and a teal bones-and-paws back" loading="lazy"></figure>
+                    <figure class="carousel-slide"><img src="images/quilt9.jpg" alt="Soccer T-shirt memory quilt folded back to show its navy blue backing" loading="lazy"></figure>
+                    <figure class="carousel-slide"><img src="images/quilt10.jpg" alt="Soccer T-shirt memory quilt made from tournament shirts" loading="lazy"></figure>
                 </div>
-                <div class="gallery-item">
-                    <img src="images/quilt2.png" alt="Quilt 2">
-                </div>
-                <div class="gallery-item">
-                    <img src="images/quilt3.png" alt="Quilt 3">
-                </div>
-                <div class="gallery-item">
-                    <img src="images/quilt4.png" alt="Quilt 4">
-                </div>
-                <div class="gallery-item">
-                    <img src="images/quilt5.png" alt="Quilt 5">
-                </div>
-                <div class="gallery-item">
-                    <img src="images/quilt6.png" alt="Quilt 6">
-                </div>
+                <button type="button" class="carousel-btn carousel-prev" aria-label="Previous quilt">&lsaquo;</button>
+                <button type="button" class="carousel-btn carousel-next" aria-label="Next quilt">&rsaquo;</button>
+                <div class="carousel-dots"></div>
             </div>
+
+            <script>
+            // carousel: arrows and dots scroll the track; swiping works natively
+            (function () {
+                const carousel = document.querySelector('.carousel');
+                const track = carousel.querySelector('.carousel-track');
+                const slides = Array.from(track.children);
+                const dotsWrap = carousel.querySelector('.carousel-dots');
+                let current = 0;
+                let target = null; // slide we're animating towards, so quick repeat clicks keep advancing
+                let targetTimer;
+
+                function goTo(i) {
+                    i = (i + slides.length) % slides.length;
+                    target = i;
+                    clearTimeout(targetTimer);
+                    targetTimer = setTimeout(function () { target = null; updateDots(); }, 800);
+                    markDot(i);
+                    track.scrollTo({ left: i * track.clientWidth });
+                }
+
+                const dots = slides.map(function (slide, i) {
+                    const dot = document.createElement('button');
+                    dot.type = 'button';
+                    dot.setAttribute('aria-label', 'Show quilt ' + (i + 1) + ' of ' + slides.length);
+                    dot.addEventListener('click', function () { goTo(i); });
+                    dotsWrap.appendChild(dot);
+                    return dot;
+                });
+
+                function markDot(index) {
+                    current = index;
+                    dots.forEach(function (dot, i) {
+                        dot.setAttribute('aria-current', i === index ? 'true' : 'false');
+                    });
+                }
+
+                function updateDots() {
+                    if (target !== null) return; // mid-animation: keep showing where we're headed
+                    markDot(Math.round(track.scrollLeft / track.clientWidth));
+                }
+
+                carousel.querySelector('.carousel-prev').addEventListener('click', function () { goTo(current - 1); });
+                carousel.querySelector('.carousel-next').addEventListener('click', function () { goTo(current + 1); });
+                track.addEventListener('scroll', updateDots, { passive: true });
+                updateDots();
+            })();
+            </script>
         </div>
 
         <div class="contact">
@@ -484,12 +611,12 @@
 
                  <div class="form-group">
                     <label for="email">Your email:</label>
-                    <input type="text" id="email" name="email" required>
+                    <input type="email" id="email" name="email" required>
                 </div>
 
                  <div class="form-group">
-                    <label for="phone">Your phone number:</label>
-                    <input type="tel" id="phone" name="phone" required>
+                    <label for="phone">Your phone number (optional):</label>
+                    <input type="tel" id="phone" name="phone">
                 </div>
 
                    <div class="form-group">
@@ -505,10 +632,10 @@
                
                 <div class="form-group">
                     <label for="message">What designs or styles do you have in mind? Anything else you'd like to share?</label>
-                    <textarea id="message" name="message" rows="4" ></textarea>
+                    <textarea id="message" name="message" rows="4" required></textarea>
                 </div>
-                
-                <button id="send-btn" type="button">Send Message</button>
+
+                <button id="send-btn" type="submit">Send Message</button>
             </form>
             </div>
 
@@ -520,9 +647,8 @@
             const email = document.getElementById('email').value.trim();
             const phone = document.getElementById('phone').value.trim();
             const recepient = document.getElementById('recepient').value.trim();
-            const date = document.getElementById('date').value.trim();
             const dateValue = document.getElementById('date').value; // YYYY-MM-DD from input[type=date]
-            // format date as DD/MM/YYYY or use 'Flexible' when empty
+            // format date as MM/DD/YYYY or use 'Flexible' when empty
                let formattedDate;
             if (dateValue) {
                const parts = dateValue.split('-');
@@ -536,11 +662,6 @@
                formattedDate = 'Flexible';
            }
             const message = document.getElementById('message').value.trim();
-
-            if (!name || !email || !message) {
-                alert('Please fill in Name, Email, and Message.');
-                return;
-            }
 
             const subject = encodeURIComponent(`Quilt mail from ${name}`);
             const bodyLines = [
@@ -560,10 +681,7 @@
             window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
         }
 
-        const sendBtn = document.getElementById('send-btn');
-        if (sendBtn) sendBtn.addEventListener('click', openMailClient);
-
-        // fallback: handle form submit if user presses Enter
+        // the browser checks the required fields first, then fires 'submit'
         const form = document.querySelector('.contact-form');
         if (form) {
             form.addEventListener('submit', function (e) {
@@ -602,7 +720,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2025 Donna's Cuddly Quilts </p>
+        <p>&copy; 2026 Donna's Cuddly Quilts </p>
     </footer>
 </body>
 </html>
