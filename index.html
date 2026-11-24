@@ -130,6 +130,14 @@
             margin: 0 0 12px;
         }
 
+        .hero a {
+            color: #4b0f4b;
+        }
+
+        .hero a:hover {
+            color: #b623b6;
+        }
+
         .gallery {
             text-align: center;
         }
@@ -623,15 +631,14 @@
             <p>Each baby quilt is handcrafted with your custom design in mind</p> 
             <p>100% cotton &bull; machine washable and dryable &bull; 42" x 42" </p>
             <p>$120 + shipping per quilt</p>
-            <p>I also make T-shirt memory quilts from your favorite old shirts &mdash; just ask for details!</p>
+            <p>I also make <a href="#slide-pet" data-slide>pet quilts</a> and <a href="#slide-tshirt" data-slide>T-shirt memory quilts</a> from your favorite old shirts &mdash; just ask for details!</p>
         </div>
 
         <div class="gallery">
             <h2>My Latest Creations</h2>
             <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Quilt photos">
                 <div class="carousel-track" tabindex="0">
-                    <figure class="carousel-slide"><img src="images/quilt11.jpg" alt="Scruffy grey dog lounging on a cartoon dog and paw print patchwork quilt"></figure>
-                    <figure class="carousel-slide"><img src="images/quilt1.jpg" alt="Two babies napping on a lime green, teal and pink patchwork quilt with flamingo squares" loading="lazy"></figure>
+                    <figure class="carousel-slide"><img src="images/quilt1.jpg" alt="Two babies napping on a lime green, teal and pink patchwork quilt with flamingo squares"></figure>
                     <figure class="carousel-slide"><img src="images/quilt2.jpg" alt="Farm-themed patchwork quilt with tractors, cow print and red gingham" loading="lazy"></figure>
                     <figure class="carousel-slide"><img src="images/quilt3.jpg" alt="Safari patchwork quilt with lions, elephants, giraffe print and yellow gingham" loading="lazy"></figure>
                     <figure class="carousel-slide"><img src="images/quilt4.jpg" alt="Bright cupcake patchwork quilt with pink, lime and polka dot squares and a lemon print back" loading="lazy"></figure>
@@ -639,8 +646,9 @@
                     <figure class="carousel-slide"><img src="images/quilt6.jpg" alt="Baby in a lemon sleeper lying on a lemon print quilt" loading="lazy"></figure>
                     <figure class="carousel-slide"><img src="images/quilt7.jpg" alt="Cartoon cat patchwork quilt with grey paw print squares and a yellow striped back" loading="lazy"></figure>
                     <figure class="carousel-slide"><img src="images/quilt8.jpg" alt="Cartoon dog patchwork quilt with grey paw print squares and a teal bones-and-paws back" loading="lazy"></figure>
+                    <figure class="carousel-slide" id="slide-pet"><img src="images/quilt11.jpg" alt="Jojo, a scruffy grey dog, lounging on his cartoon dog and paw print pet quilt" loading="lazy"></figure>
                     <figure class="carousel-slide"><img src="images/quilt9.jpg" alt="Soccer T-shirt memory quilt folded back to show its navy blue backing" loading="lazy"></figure>
-                    <figure class="carousel-slide"><img src="images/quilt10.jpg" alt="Soccer T-shirt memory quilt made from tournament shirts" loading="lazy"></figure>
+                    <figure class="carousel-slide" id="slide-tshirt"><img src="images/quilt10.jpg" alt="Soccer T-shirt memory quilt made from tournament shirts" loading="lazy"></figure>
                 </div>
                 <button type="button" class="carousel-btn carousel-prev" aria-label="Previous quilt">&lsaquo;</button>
                 <button type="button" class="carousel-btn carousel-next" aria-label="Next quilt">&rsaquo;</button>
@@ -688,6 +696,22 @@
                     markDot(Math.round(track.scrollLeft / track.clientWidth));
                 }
 
+                // text links like "pet quilts" jump the carousel to an example photo
+                document.querySelectorAll('a[data-slide]').forEach(function (link) {
+                    link.addEventListener('click', function (e) {
+                        const slide = document.getElementById(link.getAttribute('href').slice(1));
+                        const i = slides.indexOf(slide);
+                        if (i === -1) return; // fall back to the normal link jump
+                        e.preventDefault();
+                        goTo(i);
+                        // on phones the photos are further down the page, so bring them into view
+                        const box = carousel.getBoundingClientRect();
+                        if (box.top < 0 || box.bottom > window.innerHeight) {
+                            carousel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    });
+                });
+
                 carousel.querySelector('.carousel-prev').addEventListener('click', function () { goTo(current - 1); });
                 carousel.querySelector('.carousel-next').addEventListener('click', function () { goTo(current + 1); });
                 track.addEventListener('scroll', updateDots, { passive: true });
@@ -718,7 +742,7 @@
                 </div>
 
                  <div class="form-group">
-                    <label for="phone">Your phone number (optional):</label>
+                    <label for="phone">Your phone number:</label>
                     <input type="tel" id="phone" name="phone">
                 </div>
 
